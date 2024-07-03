@@ -9,28 +9,30 @@ const transactionRouter = require('./routes/transactionRouter');
 
 const app = express();
 
-// connect to mongodb
+// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("connected to mongodb"))
   .catch(err => console.log(err));
 
-// cors config
+// CORS config
 const corsOptions = {
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://tranquil-mooncake-fac675.netlify.app"],
+    methods: ["GET", "POST", "PUT", "DELETE"], // Specify the methods you want to allow
+    credentials: true // Allow cookies to be sent with requests
 };
 app.use(cors(corsOptions));
 
-// middlewares
+// Middlewares
 app.use(express.json());
 
-// routes
+// Routes
 app.use("/", userRouter);
 app.use("/", categoryRouter);
 app.use("/", transactionRouter);
 
-// error
+// Error handling
 app.use(errorHandler);
 
-// start server
+// Start server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server is running on this port ${PORT}`));
