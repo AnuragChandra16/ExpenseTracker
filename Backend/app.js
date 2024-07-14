@@ -15,12 +15,25 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err => console.log(err));
 
 // CORS config
+// const corsOptions = {
+//     origin: ["https://expense-tracker-azure-eta.vercel.app/"],//["http://localhost:5173", "*"],
+//     methods: ["GET", "POST", "PUT", "DELETE"], // Specify the methods you want to allow
+//     credentials: true // Allow cookies to be sent with requests
+// };
+// app.use(cors(corsOptions));
+
 const corsOptions = {
-    origin: ["https://expense-tracker-azure-eta.vercel.app/"],//["http://localhost:5173", "*"],
-    methods: ["GET", "POST", "PUT", "DELETE"], // Specify the methods you want to allow
-    credentials: true // Allow cookies to be sent with requests
+  origin: ['https://expense-tracker-azure-eta.vercel.app', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204
 };
+
 app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 // Middlewares
 app.use(express.json());
